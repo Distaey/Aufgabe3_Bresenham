@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class GUI extends JFrame {
 
-    Map<Integer, Integer> coords = new HashMap<>();
+    Map<Integer, Point> coords = new HashMap<>();
 
     Point previous;
     Point click = new Point(0, 0);
@@ -96,6 +96,8 @@ public class GUI extends JFrame {
                 yTextArea.append(String.valueOf(click.getY()) + "\n");
                 System.out.println("Punkt: " + e.getPoint());
                 Bresenham bresenham = new Bresenham((int) previous.getX(), (int) previous.getY(), (int) click.getX(), (int) click.getY());
+                coords = bresenham.getCoords();
+                //draw.repaint(100, 100, 100, 100);
             }
 
             @Override

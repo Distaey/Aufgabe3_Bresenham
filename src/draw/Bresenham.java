@@ -1,5 +1,6 @@
 package draw;
 
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,8 @@ public class Bresenham {
     boolean xDirection;
 
     double error;
+
+    Map<Integer, Point> coords = new HashMap<>();
 
     public Bresenham(int x0, int y0, int x1, int y1) {
 
@@ -45,6 +48,8 @@ public class Bresenham {
         System.out.println(xDirection);
         setError();
         System.out.println(error);
+
+        coords.put(0, new Point(0, 0));
 
         calcCoord();
 
@@ -83,9 +88,6 @@ public class Bresenham {
         int x = x0;
         int y = y0;
 
-        Map<Integer, Integer> coords = new HashMap<>();
-        coords.put(0, dy);
-
         if(xDirection) {
             for (int i = 1; i <= dx; i++) {
                 if (x0 < x1 && y0 < y1) {
@@ -95,10 +97,8 @@ public class Bresenham {
                         y++;
                         error = error + dx;
                     }
-                    System.out.println("Schritt " + i + ": X-Koordinate: " + x + " ; Y-Koordiante: " + y);
                 } else if (x0 < x1 && y0 == y1) {
                     x++;
-                    System.out.println("Schritt " + i + ": X-Koordinate: " + x + " ; Y-Koordiante: " + y);
                 } else if (x0 < x1 && y0 > y1) {
                     x++;
                     error = error - dy;
@@ -106,7 +106,6 @@ public class Bresenham {
                         y--;
                         error = error + dx;
                     }
-                    System.out.println("Schritt " + i + ": X-Koordinate: " + x + " ; Y-Koordiante: " + y);
                 } else if (x0 > x1 && y0 > y1) {
                     x--;
                     error = error - dy;
@@ -114,10 +113,8 @@ public class Bresenham {
                         y--;
                         error = error + dx;
                     }
-                    System.out.println("Schritt " + i + ": X-Koordinate: " + x + " ; Y-Koordiante: " + y);
                 } else if (x0 > x1 && y0 == y1) {
                     x--;
-                    System.out.println("Schritt " + i + ": X-Koordinate: " + x + " ; Y-Koordiante: " + y);
                 } else if (x0 > x1 && y0 < y1) {
                     x--;
                     error = error - dy;
@@ -125,8 +122,8 @@ public class Bresenham {
                         y++;
                         error = error + dx;
                     }
-                    System.out.println("Schritt " + i + ": X-Koordinate: " + x + " ; Y-Koordiante: " + y);
                 }
+                coords.put(i, new Point(x, y));
             }
         } else {
             for (int i = 1; i <= dy; i++) {
@@ -137,7 +134,6 @@ public class Bresenham {
                         x++;
                         error = error + dy;
                     }
-                    System.out.println("Schritt " + i + ": X-Koordinate: " + x + " ; Y-Koordiante: " + y);
                 } else if (x0 < x1 && y0 > y1) {
                     y--;
                     error = error - dx;
@@ -145,10 +141,8 @@ public class Bresenham {
                         x++;
                         error = error + dy;
                     }
-                    System.out.println("Schritt " + i + ": X-Koordinate: " + x + " ; Y-Koordiante: " + y);
                 } else if (x0 == x1 && y0 > y1) {
                     y--;
-                    System.out.println("Schritt " + i + ": X-Koordinate: " + x + " ; Y-Koordiante: " + y);
                 } else if (x0 > x1 && y0 > y1) {
                     y--;
                     error = error - dx;
@@ -156,7 +150,6 @@ public class Bresenham {
                         x--;
                         error = error + dy;
                     }
-                    System.out.println("Schritt " + i + ": X-Koordinate: " + x + " ; Y-Koordiante: " + y);
                 } else if (x0 > x1 && y0 < y1) {
                     y++;
                     error = error - dx;
@@ -164,12 +157,16 @@ public class Bresenham {
                         x--;
                         error = error + dy;
                     }
-                    System.out.println("Schritt " + i + ": X-Koordinate: " + x + " ; Y-Koordiante: " + y);
                 } else if (x0 == x1 && y0 < y1) {
                     y++;
-                    System.out.println("Schritt " + i + ": X-Koordinate: " + x + " ; Y-Koordiante: " + y);
                 }
+                coords.put(i, new Point(x, y));
             }
         }
     }
+
+    public Map getCoords(){
+        return coords;
+    }
+
 }
