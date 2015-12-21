@@ -34,11 +34,12 @@ public class Draw extends JPanel {
 
         g2.setBackground(Color.WHITE);
         g2.setColor(Color.BLACK);
-        g2.drawRect(0, 0, drawWidth-1, drawHeight-1);
+        g2.drawRect(0, 0, drawWidth - 1, drawHeight - 1);
+
         if(coords.size() > 0) {
             System.out.println(coords.size());
             System.out.println((int) coords.get(0).getX() + "" + (int) coords.get(0).getY());
-            for(int i = 0; i < coords.size(); i++) {
+            for(int i = 0; i<coords.size(); i++) {
                 g2.drawRect((int) coords.get(i).getX(), (int) coords.get(i).getY(), 1, 1);
             }
         }

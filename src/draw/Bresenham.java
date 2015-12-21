@@ -23,7 +23,13 @@ public class Bresenham {
 
     Map<Integer, Point> coords = new HashMap<>();
 
-    public Bresenham(int x0, int y0, int x1, int y1) {
+    public Bresenham() {
+
+        coords.put(0, new Point(0, 0));
+
+    }
+
+    public void setUp(int x0, int y0, int x1, int y1){
 
         this.x0 = x0;
         this.y0 = y0;
@@ -48,8 +54,6 @@ public class Bresenham {
         System.out.println(xDirection);
         setError();
         System.out.println(error);
-
-        coords.put(0, new Point(0, 0));
 
         calcCoord();
 

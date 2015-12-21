@@ -6,6 +6,8 @@ import draw.Draw;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
@@ -14,12 +16,15 @@ import java.util.Map;
 /**
  * Created by Tristan-PC on 06.12.2015.
  */
-public class GUI extends JFrame {
+public class GUI extends JFrame implements ActionListener{
 
     Map<Integer, Point> coords = new HashMap<>();
 
     Point previous;
     Point click = new Point(0, 0);
+
+    Draw draw = new Draw(coords);
+    Bresenham bresenham = new Bresenham();
 
     public GUI() {
 
@@ -35,7 +40,7 @@ public class GUI extends JFrame {
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(10, 10, 10, 10);
 
-        Draw draw = new Draw(coords);
+        //Draw draw = new Draw(coords);
         c.gridx = 0;
         c.gridy = 0;
         c.anchor = GridBagConstraints.NORTHWEST;
@@ -77,6 +82,8 @@ public class GUI extends JFrame {
             c.gridy = 2;
             jPanel2.add(bStart, c);
 
+            bStart.addActionListener(this);
+
             JButton bReset = new JButton("Reset");
             c.gridx = 2;
             c.gridy = 2;
@@ -95,7 +102,8 @@ public class GUI extends JFrame {
                 xTextArea.append(String.valueOf(click.getX()) + "\n");
                 yTextArea.append(String.valueOf(click.getY()) + "\n");
                 System.out.println("Punkt: " + e.getPoint());
-                Bresenham bresenham = new Bresenham((int) previous.getX(), (int) previous.getY(), (int) click.getX(), (int) click.getY());
+                //Bresenham bresenham = new Bresenham();
+                bresenham.setUp((int) previous.getX(), (int) previous.getY(), (int) click.getX(), (int) click.getY());
                 coords = bresenham.getCoords();
                 draw.setCoords(coords);
                 draw.repaint();
@@ -114,6 +122,8 @@ public class GUI extends JFrame {
             public void mouseExited(MouseEvent e) {}
         });
 
+
+
         add(mainPanel);
         getContentPane().revalidate();
 
@@ -121,4 +131,11 @@ public class GUI extends JFrame {
 
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        //bresenham.setUp((int) previous.getX(), (int) previous.getY(), (int) click.getX(), (int) click.getY());
+        //coords = bresenham.getCoords();
+        //draw.setCoords(coords);
+        //draw.repaint();
+    }
 }
