@@ -97,7 +97,8 @@ public class GUI extends JFrame {
                 System.out.println("Punkt: " + e.getPoint());
                 Bresenham bresenham = new Bresenham((int) previous.getX(), (int) previous.getY(), (int) click.getX(), (int) click.getY());
                 coords = bresenham.getCoords();
-                //draw.repaint(100, 100, 100, 100);
+                draw.setCoords(coords);
+                draw.repaint();
             }
 
             @Override
