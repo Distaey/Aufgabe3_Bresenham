@@ -1,6 +1,7 @@
 package draw;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,11 +22,13 @@ public class Bresenham {
 
     double error;
 
-    Map<Integer, Point> coords = new HashMap<>();
+//    Map<Integer, Point> coords = new HashMap<>();
+ArrayList<Point> coords = new ArrayList<>();
 
     public Bresenham() {
 
-        coords.put(0, new Point(0, 0));
+//        coords.put(0, new Point(0, 0));
+        coords.add(new Point(0, 0));
 
     }
 
@@ -37,23 +40,23 @@ public class Bresenham {
         this.y1 = y1;
 
         dx = x1 - x0;
-        System.out.println(dx);
+//        System.out.println(dx);
         if(dx < 0) {
             dx = dx * -1;
-            System.out.println(dx);
+//            System.out.println(dx);
         }
 
         dy = y1 - y0;
-        System.out.println(dy);
+//        System.out.println(dy);
         if(dy < 0) {
             dy = dy * -1;
-            System.out.println(dy);
+//            System.out.println(dy);
         }
 
         setDirection();
-        System.out.println(xDirection);
+//        System.out.println(xDirection);
         setError();
-        System.out.println(error);
+//        System.out.println(error);
 
         calcCoord();
 
@@ -127,7 +130,8 @@ public class Bresenham {
                         error = error + dx;
                     }
                 }
-                coords.put(i, new Point(x, y));
+//                coords.put(i, new Point(x, y));
+                coords.add(new Point(x, y));
             }
         } else {
             for (int i = 1; i <= dy; i++) {
@@ -164,12 +168,13 @@ public class Bresenham {
                 } else if (x0 == x1 && y0 < y1) {
                     y++;
                 }
-                coords.put(i, new Point(x, y));
+//                coords.put(i, new Point(x, y));
+                coords.add(new Point(x, y));
             }
         }
     }
 
-    public Map getCoords(){
+    public ArrayList<Point> getCoords(){
         return coords;
     }
 

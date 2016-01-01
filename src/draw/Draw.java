@@ -2,6 +2,7 @@ package draw;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,9 +13,11 @@ public class Draw extends JPanel {
 
     int drawWidth;
     int drawHeight;
-    Map<Integer, Point> coords = new HashMap<>();
+//    Map<Integer, Point> coords = new HashMap<>();
+    ArrayList<Point> coords = new ArrayList<>();
 
-    public Draw(Map coords) {
+
+    public Draw(ArrayList<Point> coords) {
 
         this.coords = coords;
 
@@ -36,9 +39,9 @@ public class Draw extends JPanel {
         g2.setColor(Color.BLACK);
         g2.drawRect(0, 0, drawWidth - 1, drawHeight - 1);
 
-        if(coords.size() > 0) {
-            System.out.println(coords.size());
-            System.out.println((int) coords.get(0).getX() + "" + (int) coords.get(0).getY());
+        if(coords != null && coords.size() > 0) {
+//            System.out.println(coords.size());
+//            System.out.println((int) coords.get(0).getX() + "" + (int) coords.get(0).getY());
             for(int i = 0; i<coords.size(); i++) {
                 g2.drawRect((int) coords.get(i).getX(), (int) coords.get(i).getY(), 1, 1);
             }
@@ -46,7 +49,7 @@ public class Draw extends JPanel {
 
     }
 
-    public void setCoords(Map coords) {
+    public void setCoords(ArrayList<Point> coords) {
         this.coords = coords;
     }
 

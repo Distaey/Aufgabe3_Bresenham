@@ -2,6 +2,8 @@ package gui;
 
 import draw.Bresenham;
 import draw.Draw;
+import main.DrawThread;
+import main.Line;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,13 +21,18 @@ import java.util.Map;
  */
 public class GUI extends JFrame implements ActionListener{
 
-    Map<Integer, Point> coords = new HashMap<>();
+    ArrayList<Line> lines = new ArrayList<>();
+    ArrayList<Line> newLines = new ArrayList<>();
 
     Point previous;
     Point click = new Point(0, 0);
 
-    Draw draw = new Draw(coords);
+    Draw draw = new Draw(null);
     Bresenham bresenham = new Bresenham();
+    DrawThread drawThread;
+
+    JTextArea xTextArea;
+    JTextArea yTextArea;
 
     public GUI() {
 
@@ -59,7 +67,7 @@ public class GUI extends JFrame implements ActionListener{
             c.gridy = 0;
             jPanel2.add(yLabel, c);
 
-            JTextArea xTextArea = new JTextArea();
+            xTextArea = new JTextArea();
             xTextArea.setPreferredSize(new Dimension(50, (int) (screenSize.height * 0.55)));
             xTextArea.setEditable(false);
             xTextArea.setBackground(Color.WHITE);
@@ -68,7 +76,7 @@ public class GUI extends JFrame implements ActionListener{
             xTextArea.append(click.getX() + "\n");
             jPanel2.add(xTextArea, c);
 
-            JTextArea yTextArea = new JTextArea();
+            yTextArea = new JTextArea();
             yTextArea.setPreferredSize(new Dimension(50, (int) (screenSize.height * 0.55)));
             yTextArea.setEditable(false);
             yTextArea.setBackground(Color.WHITE);
@@ -82,8 +90,6 @@ public class GUI extends JFrame implements ActionListener{
             c.gridy = 2;
             jPanel2.add(bStart, c);
 
-            bStart.addActionListener(this);
-
             JButton bReset = new JButton("Reset");
             c.gridx = 2;
             c.gridy = 2;
@@ -93,20 +99,35 @@ public class GUI extends JFrame implements ActionListener{
         mainPanel.add(jPanel1, BorderLayout.WEST);
         mainPanel.add(jPanel2, BorderLayout.EAST);
 
+        drawThread = new DrawThread(draw, xTextArea, yTextArea);
+
+
         draw.addMouseListener(new MouseListener() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
+//                previous = click;
+//                click = e.getPoint();
+//                xTextArea.append(String.valueOf(click.getX()) + "\n");
+//                yTextArea.append(String.valueOf(click.getY()) + "\n");
+//                System.out.println("Punkt: " + e.getPoint());
+//                //Bresenham bresenham = new Bresenham();
+//                bresenham.setUp((int) previous.getX(), (int) previous.getY(), (int) click.getX(), (int) click.getY());
+//                coords = bresenham.getCoords();
+//                draw.setCoords(coords);
+//                draw.repaint();
+
+                System.out.println("Punkt: " + e.getPoint());
                 previous = click;
                 click = e.getPoint();
-                xTextArea.append(String.valueOf(click.getX()) + "\n");
-                yTextArea.append(String.valueOf(click.getY()) + "\n");
-                System.out.println("Punkt: " + e.getPoint());
-                //Bresenham bresenham = new Bresenham();
+                Line line = new Line();
+                line.setxPoint(click.getX()+"\n");
+                line.setyPoint(click.getY()+"\n");
                 bresenham.setUp((int) previous.getX(), (int) previous.getY(), (int) click.getX(), (int) click.getY());
-                coords = bresenham.getCoords();
-                draw.setCoords(coords);
-                draw.repaint();
+                line.setCoords(bresenham.getCoords());
+                newLines.add(line);
+                System.out.println("newLines: " + newLines.size());
+                updateGui();
             }
 
             @Override
@@ -120,6 +141,24 @@ public class GUI extends JFrame implements ActionListener{
 
             @Override
             public void mouseExited(MouseEvent e) {}
+        });
+
+        bStart.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                drawThread.start();
+            }
+        });
+
+        bReset.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                drawThread.stop();
+                drawThread = new DrawThread(draw, xTextArea, yTextArea);
+                draw.removeAll();
+                draw.repaint();
+                newLines = new ArrayList<Line>();
+                xTextArea.setText(null);
+                yTextArea.setText(null);
+            }
         });
 
 
@@ -137,5 +176,17 @@ public class GUI extends JFrame implements ActionListener{
         //coords = bresenham.getCoords();
         //draw.setCoords(coords);
         //draw.repaint();
+    }
+
+    public void updateGui() {
+        System.out.println("updateGui() "+newLines.size());
+        if(newLines.size() > 0) {
+            drawThread.addLines(newLines);
+            for (Line line: newLines) {
+                xTextArea.append(line.getxPoint());
+                yTextArea.append(line.getyPoint());
+            }
+            newLines = new ArrayList<>();
+        }
     }
 }

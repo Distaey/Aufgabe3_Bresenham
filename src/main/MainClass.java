@@ -20,7 +20,7 @@ public class MainClass {
 
         GUI gui = new GUI();
 
-        Thread t = new Thread(new DrawLoop());
-        t.start();
+//        Thread t = new Thread(new DrawLoop());
+//        t.start();
     }
 }
